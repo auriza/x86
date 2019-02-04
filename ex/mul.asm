@@ -4,19 +4,16 @@ extern printf
 section .data
     a       dd  5000
     b       dd  4000
-    fmt     db  "%Lu", 10, 0
-
-section .bss
-    c       resq 1
+    fmt     db  "%llu", 10, 0
 
 section .text
     main:
-            ; c = a * a * b
+            ; edx:eax = a*a*b
             mov eax, [a]                    ; eax = 5k
             mul eax                         ; eax * eax = 25M
             mul dword [b]                   ; eax * [b] = 100G
 
-            ; printf("%Lu", edx:eax)
+            ; printf(fmt, edx:eax)
             push edx
             push eax
             push fmt
