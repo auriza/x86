@@ -231,7 +231,7 @@ INC mem             ; FF /0
 | `3`  | `AE`, `NC` | AboveEqual, NoCarry | `CF=0`                 |
 | `4`  | `E`, `Z`   | Equal, Zero         | `ZF=1`                 |
 | `5`  | `NE`, `NZ` | NotEqual, NoZero    | `ZF=0`                 |
-| `6`  | `BE`       | BelowEqual          | `ZF=1 || CF=1`         |
+| `6`  | `BE`       | BelowEqual          | `ZF=1 \|\| CF=1`       |
 | `7`  | `A`        | Above               | `ZF=0 && CF=0`         |
 | `8`  | `S`        | Sign                | `SF=1`                 |
 | `9`  | `NS`       | NoSign              | `SF=0`                 |
@@ -239,7 +239,7 @@ INC mem             ; FF /0
 | `11` | `NP`, `PO` | NoParity, ParityOdd | `PF=0`                 |
 | `12` | `L`        | Lower               | `SF != OF`             |
 | `13` | `GE`       | GreaterEqual        | `SF == OF`             |
-| `14` | `LE`       | LowerEqual          | `ZF=1 || (SF != OF)` |
+| `14` | `LE`       | LowerEqual          | `ZF=1 \|\| (SF != OF)` |
 | `15` | `G`        | Greater             | `ZF=0 && (SF == OF)`   |
 
 ```nasm
