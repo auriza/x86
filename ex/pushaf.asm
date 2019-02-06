@@ -8,14 +8,14 @@ section .text
             mov ebx, 400
 
             pusha
-            pushf                       ; 0x246 [.I.Z..P.]
+            pushf                       ; 0x246 [.I.Z.P.]
 
             mov eax, 500
             mov ecx, 600
-            sub edx, ecx                ; 0x283 [.IS....C]
+            sub edx, ecx                ; 0x283 [.IS...C]
 
-            popf                        ; 0x246 [.I.Z..P.]
-            popa
+            popf                        ; 0x246 [.I.Z.P.]
+            popa                        ; eax = 100, ecx = 200, ...
 
             ; exit(0)
             mov eax, 1

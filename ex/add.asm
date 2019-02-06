@@ -6,17 +6,20 @@ section .data
 
 section .text
     main:
-            mov eax, 12
-            mov ecx, 13
+            xor eax, eax                ; eax = 0
+            inc eax                     ; eax = 1
+            dec eax                     ; eax = 0       --> ZF=1
+            add eax, [b]                ; eax = 20
+            sub eax, [a]                ; eax = -5      --> SF=1
 
-            add eax, ecx                ; eax = 25
-            add [a], eax                ; [a] = 50
-            add ecx, [b]                ; ecx = 33
-            add eax, 300                ; eax = 325
-            add ecx, 200                ; ecx = 233
-            add dword [b], 500          ; [b] = 520
+            mov eax, 0x_8000_0000
+            add eax, 0x_8000_0000       ; eax = 0x_1_0000_0000
+                                        ;     = 0       --> ZF=1 CF=1 OF=1
 
             ; exit(0)
             mov eax, 1
             mov ebx, 0
             int 0x80
+
+
+

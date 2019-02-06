@@ -2,23 +2,22 @@ global main
 extern printf
 
 section .data
-    a       dd  5000
-    b       dd  4000
-    fmt     db  "%llu", 10, 0
+    a       dd  5
+    b       dd  3
+    fmt     db  "%u", 10, 0
 
 section .text
     main:
             ; edx:eax = a*a*b
-            mov eax, [a]                    ; eax = 5k
-            mul eax                         ; eax * eax = 25M
-            mul dword [b]                   ; eax * [b] = 100G
+            mov eax, [a]                    ;       eax = 5
+            mul eax                         ; eax * eax = 25
+            mul dword [b]                   ; eax * [b] = 75
 
-            ; printf(fmt, edx:eax)
-            push edx
+            ; printf(fmt, eax)
             push eax
             push fmt
             call printf
-            add  esp, 12
+            add esp, 8
 
             ; exit(0)
             mov eax, 1
