@@ -4,17 +4,18 @@ section .text
     main:
             mov eax, 100
             mov ecx, 200
-            mov edx, 300
-            mov ebx, 400
 
-            pusha
-            pushf                       ; 0x246 [.I.Z.P.]
+            ; save context
+            pusha                       ; eax = 100, ecx = 200, ...
+            pushf                       ; eflags = 0x246
 
             mov eax, 500
             mov ecx, 600
-            sub edx, ecx                ; 0x283 [.IS...C]
+            sub eax, ecx                ; eflags = 0x297
+                                        ; eax = -100, ecx = 600
 
-            popf                        ; 0x246 [.I.Z.P.]
+            ; restore context
+            popf                        ; eflags = 0x246
             popa                        ; eax = 100, ecx = 200, ...
 
             ; exit(0)

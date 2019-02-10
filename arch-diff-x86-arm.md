@@ -15,7 +15,7 @@ triple:
         mov     ebp, esp
         imul    eax, dword ptr [ebp], 3
         pop     ebp
-        ret     0
+        ret
 
 ```
 

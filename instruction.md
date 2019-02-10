@@ -1,12 +1,12 @@
 ---
-title: x86 Instruction Set
+title: Arsitektur Set Instruksi x86
 author: Auriza Akbar
 date: 2019
 ---
 
 # Register
 
-## General-Purpose Register
+## *General-Purpose Register*
 
 0. `EAX`: *accumulator*
 1. `ECX`: *counter*
@@ -17,7 +17,7 @@ date: 2019
 6. `ESI`: *source index*
 7. `EDI`: *destination index*
 
-## Flags Register
+## *Flags Register*
 
 ```
  31 ... 11  10   9   8   7   6   5   4   3   2   1   0
@@ -36,29 +36,28 @@ date: 2019
 - `DF`: *direction flag*
 - `OF`: *__overflow__ flag*
 
-## Other Register
+## *Floating Point Register*
 
-- `ST{0-7}`: *floating point stack register* (80-bit)
-- `XMM{0-7}`: *SSE register* (128-bit)
-
-
-# Instruction Set
+- `ST0`--`ST7`: *floating point stack register* (80-bit)
+- `XMM0`--`XMM7`: *streaming SIMD extension register* (128-bit)
 
 
-| Transfer         | Arith         |                 | Bitwise        | Branch         |               | Loop               | Control         | String            | FP               |                   |
-|------------------|---------------|-----------------|----------------|----------------|---------------|--------------------|-----------------|-------------------|------------------|-------------------|
-| [`MOV`](#mov)    | [`ADD`](#add) |                 | [`AND`](#and)  | [`JMP`](#jmp)  |               | [`LOOP`](#loop)    | [`INT`](#int)   | [`CMPSB`](#cmpsb) | [`FINIT`](#finit)|                   |
-| [`XCHG`](#xchg)  | [`SUB`](#sub) |                 | [`OR`](#or)    | [`JB`](#jcc)   | [`JL`](#jcc)  | [`LOOPE`](#loope)  | [`CALL`](#call) | [`SCASB`](#scasb) | [`FLD`](#fld)    | [`FILD`](#fild)   |
-| [`PUSH`](#push)  | [`INC`](#inc) |                 | [`NOT`](#not)  | [`JBE`](#jcc)  | [`JLE`](#jcc) | [`LOOPNE`](#loopne)| [`RET`](#ret)   | [`MOVSB`](#movsb) | [`FST`](#fst)    | [`FIST`](#fist)   |
-| [`PUSHA`](#pusha)| [`DEC`](#dec) |                 | [`XOR`](#xor)  | [`JE`](#jc)    |               | [`REP`](#rep)      | [`CLD`](#cld)   | [`LODSB`](#lodsb) | [`FADD`](#fadd)  | [`FIADD`](#fiadd) |
-| [`PUSHF`](#pushf)| [`MUL`](#mul) | [`IMUL`](#imul) | [`SHL`](#shl)  | [`JNE`](#jcc)  |               | [`REPE`](#repe)    | [`STD`](#std)   | [`STOSB`](#stosb) | [`FSUB`](#fsub)  | [`FISUB`](#fisub) |
-| [`POP`](#pop)    | [`DIV`](#div) | [`IDIV`](#idiv) | [`SHR`](#shr)  | [`JAE`](#jcc)  | [`JGE`](#jcc) | [`REPNE`](#repne)  | [`NOP`](#nop)   |                   | [`FMUL`](#fmul)  | [`FIMUL`](#fimul) |
-| [`POPA`](#popa)  | [`NEG`](#neg) |                 | [`ROR`](#ror)  | [`JA`](#jcc)   | [`JG`](#jcc)  |                    |                 |                   | [`FDIV`](#fdiv)  | [`FIDIV`](#fidiv) |
-| [`POPF`](#popf)  | [`CMP`](#cmp) |                 | [`ROL`](#rol)  | [`JC`](#jcc)   |               |                    |                 |                   | [`FCOMI`](#fcomi)|                   |
-| [`LEA`](#lea)    |               |                 | [`BT`](#bt)    | [`JNC`](#jcc)  |               |                    |                 |                   | [`FSQRT`](#fsqrt)|                   |
-| [`CDQ`](#cdq)    |               |                 | [`BSWAP`](#bswap)| [`JECXZ`](#jecxz)|           |                    |                 |                   | [`FABS`](#fabs)  |                   |
-|                  |               |                 |                |                |               |                    |                 |                   | [`FLDPI`](#fldpi)|                   |
+# Set Instruksi
 
+
+| Transfer         | Arithmetic                     | Bitwise        | Branch                       | Loop              | String            | Control         | Float                              |
+|------------------|--------------------------------|----------------|------------------------------|-------------------|-------------------|-----------------|------------------------------------|
+| [`MOV`](#mov)    | [`ADD`](#add)                  | [`AND`](#and)  | [`JMP`](#jmp)                | [`LOOP`](#loop)   | [`CMPSB`](#cmpsb) | [`INT`](#int)   | [`FINIT`](#finit)                  |
+| [`XCHG`](#xchg)  | [`SUB`](#sub)                  | [`OR`](#or)    | [`JB`](#jcc), [`JL`](#jcc)   | [`LOOPE`](#loop)  | [`SCASB`](#scasb) | [`CALL`](#call) | [`FLD`](#fld), [`FILD`](#fild)     |
+| [`PUSH`](#push)  | [`INC`](#inc)                  | [`NOT`](#not)  | [`JBE`](#jcc), [`JLE`](#jcc) | [`LOOPNE`](#loop) | [`MOVSB`](#movsb) | [`RET`](#ret)   | [`FST`](#fst), [`FIST`](#fist)     |
+| [`PUSHA`](#pusha)| [`DEC`](#dec)                  | [`XOR`](#xor)  | [`JE`](#jc)                  | [`REP`](#rep)     | [`LODSB`](#lodsb) | [`NOP`](#nop)   | [`FADD`](#fadd), [`FIADD`](#fiadd) |
+| [`PUSHF`](#pushf)| [`MUL`](#mul), [`IMUL`](#imul) | [`SHL`](#shl)  | [`JNE`](#jcc)                | [`REPE`](#rep)    | [`STOSB`](#stosb) | [`CLD`](#cld)   | [`FSUB`](#fsub), [`FISUB`](#fisub) |
+| [`POP`](#pop)    | [`DIV`](#div), [`IDIV`](#idiv) | [`SHR`](#shr)  | [`JAE`](#jcc), [`JGE`](#jcc) | [`REPNE`](#rep)   |                   | [`STD`](#std)   | [`FMUL`](#fmul), [`FIMUL`](#fimul) |
+| [`POPA`](#popa)  | [`NEG`](#neg)                  | [`ROR`](#ror)  | [`JA`](#jcc), [`JG`](#jcc)   |                   |                   |                 | [`FDIV`](#fdiv), [`FIDIV`](#fidiv) |
+| [`POPF`](#popf)  | [`CMP`](#cmp)                  | [`ROL`](#rol)  | [`JECXZ`](#jecxz)            |                   |                   |                 | [`FCOMI`](#fcomi)                  |
+| [`LEA`](#lea)    |                                | [`BT`](#bt)    |                              |                   |                   |                 | [`FSQRT`](#fsqrt)                  |
+| [`CDQ`](#cdq)    |                                | [`BSWAP`](#bswap)|                            |                   |                   |                 | [`FABS`](#fabs)                    |
+|                  |                                |                |                              |                   |                   |                 | [`FCHS`](#fchs)                    |
 
 ## `ADD`
 
@@ -115,6 +114,21 @@ BT  r/m, reg        ; 0F A3 /r
 BT  r/m, imm        ; 0F BA /4 ib
 ```
 
+## `CALL`
+
+*Call Function*
+: Memanggil fungsi dengan menyimpan `EIP` ke *stack*, lalu melompat ke alamat
+    yang diberikan.
+
+```nasm
+CALL fun            ; PUSH EIP; JMP fun
+
+CALL imm            ; E8 rd
+CALL imm:imm        ; 9A id iw
+CALL r/m            ; FF /2
+CALL FAR mem        ; FF /3
+```
+
 ## `CDQ`
 
 *Change Double to Quad*
@@ -128,11 +142,22 @@ CDQ                 ; EAX --> EDX:EAX
 CDQ                 ; 99
 ```
 
+## `CLD`
+
+*Clear Direction Flag*
+: Mereset *direction flag* (`DF`), untuk mengesetnya gunakan [`STD`](#std).
+
+```nasm
+CLD                 ; DF = 0
+
+CLD                 ; FC
+```
+
 ## `CMP`
 
 *Compare Integers*
-: Melakukan pengurangan, namun hasilnya tidak disimpan dan hanya *flag* yang
-    berubah.
+: Melakukan pengurangan, namun hasilnya tidak disimpan, hanya *flag* status yang
+    berubah sesuai hasil operasi.
 
 ```nasm
 CMP dst, src        ; dst - src                                 [OSZAPC]
@@ -141,6 +166,22 @@ CMP r/m, reg        ; 39 /r
 CMP reg, r/m        ; 3B /r
 CMP EAX, imm        ; 3D id
 CMP r/m, imm        ; 81 /0 id
+```
+
+## `CMPSB`
+
+*Compare Strings*
+: Membandingkan *byte* pada `[ESI]` dengan *byte* pada `[EDI]`, *flag* status
+    berubah sesuai hasil operasi, lalu menambah nilai `ESI` dan `EDI` (atau
+    mengurangi jika `DF=1`). Prefiks [`REPE`](#rep) atau [`REPNE`](#rep) dapat
+    ditambahkan untuk mengulang instruksi hingga `ECX` kali sampai *byte*
+    pertama yang berbeda atau sama ditemukan.
+
+```nasm
+CMPSB               ; CMP [ESI++], [EDI++]                      [OSZAPC]
+
+CMPSB               ; A6
+CMPSD               ; A7
 ```
 
 ## `DEC`
@@ -168,6 +209,15 @@ DIV n               ; EAX = EDX:EAX / n
                     ; EDX = EDX:EAX % n
 
 DIV r/m             ; F7 /6
+```
+
+## `FINIT`
+
+*Initialise Floating-Point Unit*
+: Menginisialisasi FPU ke keadaan *default*, semua register ditandai kosong.
+
+```nasm
+FINIT               ; 9B DB E3
 ```
 
 ## `IDIV`
@@ -215,32 +265,43 @@ INC reg             ; 40+r
 INC mem             ; FF /0
 ```
 
+## `INT`
+
+*Interrupt*
+: Menimbulkan *software interrupt* dengan nomor vektor 0--255.
+
+```nasm
+INT vec
+
+INT imm             ; CD ib
+```
+
 ## `Jcc`
 
 *Jump if Condition*
 : Lompat ke alamat relatif (satu segmen) yang diberikan jika kondisi `cc`
     terpenuhi. Berikut rincian kondisi dan *flag* yang memicunya. Sebagai
-    contoh, `JZ` akan lompat hanya jika `ZF` bernilai 1.
+    contoh, `JE` akan lompat hanya jika `ZF=1`.
     [\[contoh\]](ex/jmp.asm)
 
-| `cc` | *Mnemonic* | Kondisi             | *Flag*                 |
-| ---- | :--------- | :------------------ | :--------------------- |
-| `0`  | `O`        | Overflow            | `OF=1`                 |
-| `1`  | `NO`       | NoOverflow          | `OF=0`                 |
-| `2`  | `B`, `C`   | Below, Carry        | `CF=1`                 |
-| `3`  | `AE`, `NC` | AboveEqual, NoCarry | `CF=0`                 |
-| `4`  | `E`, `Z`   | Equal, Zero         | `ZF=1`                 |
-| `5`  | `NE`, `NZ` | NotEqual, NoZero    | `ZF=0`                 |
-| `6`  | `BE`       | BelowEqual          | `ZF=1 \|\| CF=1`       |
-| `7`  | `A`        | Above               | `ZF=0 && CF=0`         |
-| `8`  | `S`        | Sign                | `SF=1`                 |
-| `9`  | `NS`       | NoSign              | `SF=0`                 |
-| `10` | `P`, `PE`  | Parity, ParityEven  | `PF=1`                 |
-| `11` | `NP`, `PO` | NoParity, ParityOdd | `PF=0`                 |
-| `12` | `L`        | Lower               | `SF != OF`             |
-| `13` | `GE`       | GreaterEqual        | `SF == OF`             |
-| `14` | `LE`       | LowerEqual          | `ZF=1 \|\| (SF != OF)` |
-| `15` | `G`        | Greater             | `ZF=0 && (SF == OF)`   |
+| No | Kode       | Keterangan          | *Flag*                 |
+| -- | :--------- | :------------------ | :--------------------- |
+| 0  | `O`        | Overflow            | `OF=1`                 |
+| 1  | `NO`       | NoOverflow          | `OF=0`                 |
+| 2  | `B`, `C`   | Below, Carry        | `CF=1`                 |
+| 3  | `AE`, `NC` | AboveEqual, NoCarry | `CF=0`                 |
+| 4  | `E`, `Z`   | Equal, Zero         | `ZF=1`                 |
+| 5  | `NE`, `NZ` | NotEqual, NoZero    | `ZF=0`                 |
+| 6  | `BE`       | BelowEqual          | `ZF=1 \|\| CF=1`       |
+| 7  | `A`        | Above               | `ZF=0 && CF=0`         |
+| 8  | `S`        | Sign                | `SF=1`                 |
+| 9  | `NS`       | NoSign              | `SF=0`                 |
+| 10 | `P`, `PE`  | Parity, ParityEven  | `PF=1`                 |
+| 11 | `NP`, `PO` | NoParity, ParityOdd | `PF=0`                 |
+| 12 | `L`        | Lower               | `SF != OF`             |
+| 13 | `GE`       | GreaterEqual        | `SF == OF`             |
+| 14 | `LE`       | LowerEqual          | `ZF=1 \|\| (SF != OF)` |
+| 15 | `G`        | Greater             | `ZF=0 && (SF == OF)`   |
 
 ```nasm
 Jcc rel             ; if (cc) EIP += rel
@@ -291,6 +352,37 @@ LEA dst, src        ; dst = addr(src)
 LEA reg, mem        ; 8D \r
 ```
 
+## `LODSB`
+
+*Load from String*
+: Menyalin *byte* pada `[ESI]` ke `AL`, lalu menambah nilai `ESI` (atau
+    mengurangi jika `DF=1`). Prefiks [`REP`](#rep) dapat ditambahkan untuk
+    mengulang instruksi hingga `ECX` kali.
+
+```nasm
+LODSB               ; MOV AL, [ESI++]
+
+LODSB               ; AC
+LODSD               ; AD
+```
+
+## `LOOP`
+
+*Loop with counter*
+: Mengurangi register *counter* `ECX` dengan satu, dan jika *counter* belum
+    bernilai nol, lompat ke label yang diberikan. `LOOPE` dan `LOOPNE`
+    menambahkan kondisi *zero flag* untuk melompat.
+
+```nasm
+LOOP   rel          ; if (--ECX)        EIP += rel
+LOOPE  rel          ; if (--ECX &&  ZF) EIP += rel
+LOOPNE rel          ; if (--ECX && !ZF) EIP += rel
+
+LOOP   imm          ; E2 rb
+LOOPE  imm          ; E1 rb
+LOOPNE imm          ; E0 rb
+```
+
 ## `MOV`
 
 *Move*
@@ -305,6 +397,21 @@ MOV reg, imm        ; B8+r id
 MOV r/m, imm        ; C7 /0 id
 MOV EAX, ofs        ; A1 od
 MOV ofs, EAX        ; A3 od
+```
+
+## `MOVSB`
+
+*Move String*
+: Menyalin *byte* pada `[ESI]` ke *byte* pada `[EDI]`, lalu menambah nilai `ESI`
+    dan `EDI` (atau mengurangi jika `DF=1`). Prefiks [`REP`](#rep) dapat
+    ditambahkan untuk mengulang instruksi hingga `ECX` kali.
+
+
+```nasm
+MOVSB               ; MOV [EDI++], [ESI++]
+
+MOVSB               ; A4
+MOVSD               ; A5
 ```
 
 ## `MUL`
@@ -329,6 +436,17 @@ MUL r/m             ; F7 /4
 NEG dst             ; dst = -dst                                [OSZAPC]
 
 NEG r/m             ; F7 /3
+```
+
+## `NOP`
+
+*No Operation*
+: Tidak melakukan operasi apapun, sama dengan operasi `XCHG EAX, EAX`.
+
+```nasm
+NOP                 ; -
+
+NOP                 ; 90
 ```
 
 ## `NOT`
@@ -374,9 +492,9 @@ POP mem             ; BF /0
 ## `POPA`
 
 *Pop All General-Purpose Register*
-: Mengambil data dari *stack* ke `EDI`, `ESI`, `EBP`, kosong, `EBX`, `EDX`,
+: Mengambil data dari *stack* ke `EDI`, `ESI`, `EBP`, ---, `EBX`, `EDX`,
     `ECX`, dan `EAX`. Balikan dari operasi [`PUSHA`](#pusha), namun nilai `ESP`
-    yang sebelumnya tidak dikembalikan. [\[contoh\]](ex/pushaf.asm)
+    tidak diambil dari *stack*. [\[contoh\]](ex/pushaf.asm)
 
 ```nasm
 POPA                ; POP {EDI,ESI,EBP,---,EBX,EDX,ECX,EAX}
@@ -436,6 +554,37 @@ PUSHF               ; PUSH EFLAGS
 PUSHF               ; 9C
 ```
 
+## `REP`
+
+*Repeat*
+: Mengulang instruksi *string* hingga `ECX` kali. `REPE` dan `REPNE` menambahkan
+    kondisi *zero flag* untuk melanjutkan perulangan.
+
+```nasm
+REP   MOVSB         ; while (ECX--)        MOVSB
+REPE  CMPSB         ; while (ECX-- &&  ZF) CMPSB
+REPNE SCASB         ; while (ECX-- && !ZF) SCASB
+
+REP                 ; F3
+REPE                ; F3
+REPNE               ; F2
+```
+
+## `RET`
+
+*Return from Call*
+: Mengambil `EIP` dari *stack* dan memindahkan kontrol ke alamat yang baru. Jika
+    operand kedua ada, `ESP` akan ditambah sebanyak *n* setelah alamat *return*
+    diambil.
+
+```nasm
+RET                 ; POP EIP
+RET n               ; POP EIP; ESP += n
+
+RET                 ; C3
+RET imm             ; C2 iw
+```
+
 ## `ROL`
 
 *Rotate Left*
@@ -462,6 +611,22 @@ ROR dst, n          ;                                           [OSZAPC]
 ROR r/m, 1          ; D1 /1
 ROR r/m, CL         ; D3 /1
 ROR r/m, imm        ; C1 /1 ib
+```
+
+## `SCASB`
+
+*Scan String*
+: Membandingkan *byte* di `AL` dengan *byte* pada `[EDI]`, *flag* status
+    berubah sesuai hasil operasi, lalu menambah nilai `ESI` dan `EDI` (atau
+    mengurangi jika `DF=1`). Prefiks [`REPE`](#rep) atau [`REPNE`](#rep) dapat
+    ditambahkan untuk mengulang instruksi hingga `ECX` kali sampai *byte*
+    pertama yang berbeda atau sama ditemukan.
+
+```nasm
+SCASB               ; CMP AL, [EDI++]                           [OSZAPC]
+
+SCASB               ; AE
+SCASD               ; AF
 ```
 
 ## `SHL`
@@ -492,6 +657,31 @@ SHR dst, n          ; dst >>= n                                 [OSZ.PC]
 SHR r/m, 1          ; D1 /5
 SHR r/m, CL         ; D3 /5
 SHR r/m, imm        ; C1 /5 ib
+```
+
+## `STD`
+
+*Set Direction Flag*
+: Mengeset *direction flag* (`DF`), untuk meresetnya gunakan [`CLD`](#cld).
+
+```nasm
+STD                 ; DF = 1
+
+STD                 ; FD
+```
+
+## `STOSB`
+
+*Store Byte to String*
+: Menyalin *byte* di `AL` ke `[EDI]` ke `AL`, lalu menambah nilai `EDI` (atau
+    mengurangi jika `DF=1`). Prefiks [`REP`](#rep) dapat ditambahkan untuk
+    mengulang instruksi hingga `ECX` kali.
+
+```nasm
+STOSB               ; MOV [EDI++], AL
+
+STOSB               ; AA
+STOSD               ; AB
 ```
 
 ## `SUB`

@@ -1,3 +1,3 @@
 # x86
 
-- [Instruction Set](instruction.md)
+1. [Arsitektur Set Instruksi (ISA)](instruction.md)
