@@ -1,42 +1,29 @@
 global main
-extern printf, scanf
 
 section .data
-    fmt_in      db  "%d %d", 0
-    fmt_out     db  "%u %c %u", 10, 0
-
-section .bss
-    a           resd 1
-    b           resd 1
+    a           dd      5
+    str_pos     db      "positive", 10, 0
+    str_neg     db      "negative", 10, 0
 
 section .text
-    main:
-                ; scanf(fmt_in, a, b)
-                push b
-                push a
-                push fmt_in
-                call scanf
-                add esp, 12
+    main
+                ; if (a >= 0)
+                ;     ecx = str_pos
+                ; else
+                ;     ecx = str_neg
+                cmp     dword [a], 0
+                jge     positive
+                mov     ecx, str_neg
+                jmp     write
+    positive    mov     ecx, str_pos
 
-                ; compare [a] and [b]
-                mov eax, [a]
-                cmp eax, [b]
-                jb  below
-                ja  above
-                mov ebx, "="
-                jmp print
-    below:      mov ebx, "<"
-                jmp print
-    above:      mov ebx, ">"
+    write       ; write(stdout, str, len)
+                mov     eax, 4
+                mov     ebx, 1
+                mov     edx, 9
+                int     0x80
 
-    print:      ; printf(fmt_out, [a], ebx, [b])
-                push dword [b]
-                push ebx
-                push dword [a]
-                push fmt_out
-                call printf
-                add esp, 16
-
-                ; return 0
-                mov eax, 0
-                ret
+                ; exit(0)
+                mov     eax, 1
+                mov     ebx, 0
+                int     0x80
