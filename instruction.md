@@ -49,8 +49,8 @@ date: 2019
 |------------------|--------------------------------|----------------|------------------------------|-------------------|-------------------|-----------------|------------------------------------|
 | [`MOV`](#mov)    | [`ADD`](#add)                  | [`AND`](#and)  | [`JMP`](#jmp)                | [`LOOP`](#loop)   | [`CMPSB`](#cmpsb) | [`INT`](#int)   | [`FINIT`](#finit)                  |
 | [`XCHG`](#xchg)  | [`SUB`](#sub)                  | [`OR`](#or)    | [`JB`](#jcc), [`JL`](#jcc)   | [`LOOPE`](#loop)  | [`SCASB`](#scasb) | [`CALL`](#call) | [`FLD`](#fld), [`FILD`](#fild)     |
-| [`PUSH`](#push)  | [`INC`](#inc)                  | [`NOT`](#not)  | [`JBE`](#jcc), [`JLE`](#jcc) | [`LOOPNE`](#loop) | [`MOVSB`](#movsb) | [`RET`](#ret)   | [`FST`](#fst), [`FIST`](#fist)     |
-| [`PUSHA`](#pusha)| [`DEC`](#dec)                  | [`XOR`](#xor)  | [`JE`](#jc)                  | [`REP`](#rep)     | [`LODSB`](#lodsb) | [`NOP`](#nop)   | [`FADD`](#fadd), [`FIADD`](#fiadd) |
+| [`PUSH`](#push)  | [`INC`](#inc)                  | [`XOR`](#xor)  | [`JBE`](#jcc), [`JLE`](#jcc) | [`LOOPNE`](#loop) | [`MOVSB`](#movsb) | [`RET`](#ret)   | [`FST`](#fst), [`FIST`](#fist)     |
+| [`PUSHA`](#pusha)| [`DEC`](#dec)                  | [`NOT`](#not)  | [`JE`](#jc)                  | [`REP`](#rep)     | [`LODSB`](#lodsb) | [`NOP`](#nop)   | [`FADD`](#fadd), [`FIADD`](#fiadd) |
 | [`PUSHF`](#pushf)| [`MUL`](#mul), [`IMUL`](#imul) | [`SHL`](#shl)  | [`JNE`](#jcc)                | [`REPE`](#rep)    | [`STOSB`](#stosb) | [`CLD`](#cld)   | [`FSUB`](#fsub), [`FISUB`](#fisub) |
 | [`POP`](#pop)    | [`DIV`](#div), [`IDIV`](#idiv) | [`SHR`](#shr)  | [`JAE`](#jcc), [`JGE`](#jcc) | [`REPNE`](#rep)   |                   | [`STD`](#std)   | [`FMUL`](#fmul), [`FIMUL`](#fimul) |
 | [`POPA`](#popa)  | [`NEG`](#neg)                  | [`ROR`](#ror)  | [`JA`](#jcc), [`JG`](#jcc)   |                   |                   |                 | [`FDIV`](#fdiv), [`FIDIV`](#fidiv) |
@@ -77,11 +77,11 @@ ADD r/m, imm        ; 81 /0 id
 ## `AND`
 
 *Bitwise AND*
-: Melakukan operasi *bitwise* AND antara dua nilai dan menyimpan hasilnya ke
-    tujuan. [\[contoh\]](ex/bit.asm)
+: Melakukan operasi *bitwise* AND dan menyimpan hasilnya ke tujuan, serta
+    mereset `OF` dan `CF`. [\[contoh\]](ex/bit.asm)
 
 ```nasm
-AND dst, src        ; dst &= src                                [OSZ.PC]
+AND dst, src        ; dst &= src                                [_SZ.P_]
 
 AND r/m, reg        ; 21 /r
 AND reg, r/m        ; 23 /r
@@ -464,11 +464,11 @@ NOT r/m             ; F7 /2
 ## `OR`
 
 *Bitwise OR*
-: Melakukan operasi *bitwise* OR antara dua nilai dan menyimpan hasilnya ke
-    tujuan. [\[contoh\]](ex/bit.asm)
+: Melakukan operasi *bitwise* OR dan menyimpan hasilnya ke tujuan, serta
+    mereset `OF` dan `CF`. [\[contoh\]](ex/bit.asm)
 
 ```nasm
-OR dst, src         ; dst |= src                                [OSZ.PC]
+OR dst, src         ; dst |= src                                [_SZ.P_]
 
 OR r/m, reg         ; 09 /r
 OR reg, r/m         ; 0B /r
@@ -673,9 +673,9 @@ STD                 ; FD
 ## `STOSB`
 
 *Store Byte to String*
-: Menyalin *byte* di `AL` ke `[EDI]` ke `AL`, lalu menambah nilai `EDI` (atau
-    mengurangi jika `DF=1`). Prefiks [`REP`](#rep) dapat ditambahkan untuk
-    mengulang instruksi hingga `ECX` kali.
+: Menyalin *byte* di `AL` ke `[EDI]`, lalu menambah nilai `EDI` (atau mengurangi
+    jika `DF=1`). Prefiks [`REP`](#rep) dapat ditambahkan untuk mengulang
+    instruksi hingga `ECX` kali.
 
 ```nasm
 STOSB               ; MOV [EDI++], AL
@@ -714,11 +714,11 @@ XCHG EAX, reg       ; 90+r
 ## `XOR`
 
 *Bitwise XOR*
-: Melakukan operasi *bitwise* XOR antara dua nilai dan menyimpan hasilnya ke
-    tujuan. [\[contoh\]](ex/bit.asm)
+: Melakukan operasi *bitwise* XOR dan menyimpan hasilnya ke tujuan, serta
+    mereset `OF` dan `CF`. [\[contoh\]](ex/bit.asm)
 
 ```nasm
-XOR dst, src        ; dst ^= src                                [OSZ.PC]
+XOR dst, src        ; dst ^= src                                [_SZ.P_]
 
 XOR r/m, reg        ; 31 /r
 XOR reg, r/m        ; 33 /r

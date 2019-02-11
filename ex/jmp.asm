@@ -29,7 +29,7 @@ section .text
                 jmp print
     above:      mov ebx, ">"
 
-    print:      ; printf(fmt_out, [a], edx, [b])
+    print:      ; printf(fmt_out, [a], ebx, [b])
                 push dword [b]
                 push ebx
                 push dword [a]
