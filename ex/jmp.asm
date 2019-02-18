@@ -6,18 +6,20 @@ section .data
     str_neg     db      "negative", 10, 0
 
 section .text
-    main
+    main:
                 ; if (a >= 0)
                 ;     ecx = str_pos
                 ; else
                 ;     ecx = str_neg
                 cmp     dword [a], 0
                 jge     positive
-                mov     ecx, str_neg
-                jmp     write
-    positive    mov     ecx, str_pos
-
-    write       ; write(stdout, str, len)
+                jl      negative
+    positive:   mov     ecx, str_pos
+                jmp     endif
+    negative:   mov     ecx, str_neg
+                jmp     endif
+    endif:
+                ; write(stdout, str, len)
                 mov     eax, 4
                 mov     ebx, 1
                 mov     edx, 9

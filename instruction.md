@@ -344,7 +344,7 @@ JMP FAR mem         ; FF /5
 
 *Load Effective Addres*
 : Menghitung alamat efektif memori yang diberikan dan menyimpannya ke register
-    tujuan, misal: `LEA EAX, [EBX + ECX*4 + 80]`{.asm}.
+    tujuan, misal: `LEA EAX, [EBX + ECX*4 + 80]`.
 
 ```nasm
 LEA dst, src        ; dst = addr(src)
