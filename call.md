@@ -50,7 +50,7 @@ kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 2. Alokasikan variabel lokal di *stack*.
 3. Simpan nilai `EBX`, `EDI`, dan `ESI` ke *stack* jika ingin dipakai (*callee-saved*).
 4. Nilai kembalian disimpan di `EAX`.
-5. Kembalikan nilai `EBX`, `EDI, dan `ESI` dari *stack* jika sebelumnya dipakai.
+5. Kembalikan nilai `EBX`, `EDI`, dan `ESI` dari *stack* jika sebelumnya dipakai.
 6. Dealokasi variabel lokal.
 7. Kembalikan nilai `EBP` dari *stack*.
 
