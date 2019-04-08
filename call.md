@@ -69,8 +69,8 @@ int sum(int a, int b, int c) {
 ```nasm
 sum:
         push    ebp                     ; save old ebp
-        mov     ebp, esp                ; this new ebp (as reference to parameter and local variable)
-        sub     esp, 8                  ; allocate 2 local variables
+        mov     ebp, esp                ; this new ebp
+        sub     esp, 8                  ; allocate 2 local vars
 
         mov     dword [ebp-4], 15       ; d = 15
         mov     dword [ebp-8], 20       ; e = 20
@@ -82,16 +82,14 @@ sum:
         add     eax, [ebp-4]            ; eax += d
         add     eax, [ebp-8]            ; eax += e
 
-        mov     esp, ebp                ; deallocate local variables
+        mov     esp, ebp                ; deallocate local vars
         pop     ebp                     ; restore old ebp
         ret
 
 main:
-        ; sum(25, 10, 5)
         push    dword 5
         push    dword 10
         push    dword 25
-        call    sum
+        call    sum                     ; sum(25, 10, 5) --> eax = 75
         add     esp, 12
-        ; eax = 75
 ```
