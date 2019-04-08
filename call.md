@@ -56,6 +56,8 @@ kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 
 ## Contoh
 
+[`call.asm`](ex/call.asm)
+
 ```c
 int sum(int a, int b, int c) {
     int d = 15, e = 20;
@@ -74,11 +76,11 @@ sum:
         mov     dword [ebp-8], 20       ; e = 20
 
         mov     eax, 0                  ; eax  = 0
-        add     eax, dword [ebp+8]      ; eax += a
-        add     eax, dword [ebp+12]     ; eax += b
-        add     eax, dword [ebp+16]     ; eax += c
-        add     eax, dword [ebp-4]      ; eax += d
-        add     eax, dword [ebp-8]      ; eax += e
+        add     eax, [ebp+8]            ; eax += a
+        add     eax, [ebp+12]           ; eax += b
+        add     eax, [ebp+16]           ; eax += c
+        add     eax, [ebp-4]            ; eax += d
+        add     eax, [ebp-8]            ; eax += e
 
         mov     esp, ebp                ; deallocate local variables
         pop     ebp                     ; restore old ebp
