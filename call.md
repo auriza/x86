@@ -15,7 +15,7 @@ akan berada pada kondisi yang tidak konsisten.
 
 Berikut gambaran dari isi *stack* selama eksekusi subrutin dengan tiga parameter
 dan dua variabel lokal. Tiap sel lebarnya 4 *bytes*. Parameter pertama terletak
-pada 8 *bytes* setelah EBP. Di atas parameter pada *stack* adalah *return address*
+pada 8 *bytes* setelah `EBP`. Di atas parameter pada *stack* adalah *return address*
 yang diletakkan oleh instruksi `CALL`. Saat instruksi `RET` dijalankan untuk
 kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 
