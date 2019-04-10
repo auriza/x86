@@ -1,4 +1,4 @@
-# System Call
+# *System Call*
 
 
 Operasi yang berhubungan langsung dengan *hardware* memerlukan bantuan sistem
@@ -80,7 +80,8 @@ ingin melihat definisi *syscall* `read`, maka ketikkan perintah `man 2 read`.
 
 ## Contoh
 
-[syscall-creat.asm](ex/syscall-creat.asm)
+[syscall-creat.asm](ex/syscall-creat.asm)\
+[syscall-open.asm](ex/syscall-open.asm)
 
 ```nasm
 global main
