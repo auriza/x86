@@ -7,6 +7,11 @@ dan sebagainya. *System call* digunakan untuk memanggil layanan SO secara langsu
 tanpa bantuan dari pustaka C `libc`. Hal ini berguna jika kita ingin menghasilkan
 program yang kecil dan cepat tanpa tergantung pustaka C.
 
+Berikut adalah dua kode untuk mencetak "Hello world!": [hello.asm](ex/hello.asm) dan [hello-c.asm](hello-c.asm).
+Perbedaan setelah di-*build* adalah pada ukuran *executable file*. Kode yang menggunakan pustaka C menghasilkan
+*executable* sebesar 7.2 kB, sedangkan kode yang hanya menggunakan *system call* ukurannya
+lebih kecil, yaitu hanya 644 *bytes*.
+
 
 ## Cara Pemanggilan *System Call*
 
@@ -127,3 +132,4 @@ section .text
                 mov     ebx, 0
                 int     0x80
 ```
+
