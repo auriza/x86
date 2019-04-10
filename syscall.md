@@ -49,11 +49,12 @@ ingin melihat definisi *syscall* `read`, maka ketikkan perintah `man 2 read`.
 
 ### *Flags* untuk `open`
 
-| Nilai | Nama       | Deskripsi    |
+| Oktal | Nama       | Deskripsi    |
 | :---- | :--------- | :----------- |
 | 0     | `O_RDONLY` | *Read-only*  |
 | 1     | `O_WRONLY` | *Write-only* |
 | 2     | `O_RDWR`   | *Read/write* |
+| 100   | `O_CREAT`  | Jika *file* belum ada, buat baru |
 
 ### *Whence* untuk `lseek`
 
@@ -77,6 +78,13 @@ ingin melihat definisi *syscall* `read`, maka ketikkan perintah `man 2 read`.
 | 002   | `S_IWOTH` | *Write by others*          |
 | 001   | `S_IXOTH` | *Execute/search by others* |
 
+### *File descriptor*
+
+| Nilai | Nama       | Deskripsi                           |
+| :---- | :--------- | :---------------------------------- |
+| 0     | `stdin`    | *Standard input* (*keyboard*)       |
+| 1     | `stdout`   | *Standard output* (layar)           |
+| 2     | `stderr`   | *Standard error*                    |
 
 ## Contoh
 

@@ -30,7 +30,7 @@ section .text
 
                 ; write(fd, buffer, count)
                 mov     eax, 4
-                mov     ebx, 0                      ; 0 = stdout
+                mov     ebx, 1                      ; 1 = stdout
                 mov     ecx, buffer
                 mov     edx, 52
                 int     0x80
