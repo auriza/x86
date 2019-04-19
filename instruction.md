@@ -45,7 +45,7 @@ date: 2019
 # Set Instruksi
 
 
-| Transfer         | Arithmetic                     | Bitwise        | Branch                       | Loop              | String            | Control         | Float                              |
+| Transfer         | Arithmetic                     | Bitwise        | Branch                       | Loop              | String            | Control         | Floating-point                     |
 |------------------|--------------------------------|----------------|------------------------------|-------------------|-------------------|-----------------|------------------------------------|
 | [`MOV`](#mov)    | [`ADD`](#add)                  | [`AND`](#and)  | [`JMP`](#jmp)                | [`LOOP`](#loop)   | [`CMPSB`](#cmpsb) | [`INT`](#int)   | [`FINIT`](#finit)                  |
 | [`XCHG`](#xchg)  | [`SUB`](#sub)                  | [`OR`](#or)    | [`JB`](#jcc), [`JL`](#jcc)   | [`LOOPE`](#loop)  | [`SCASB`](#scasb) | [`CALL`](#call) | [`FLD`](#fld), [`FILD`](#fild)     |
@@ -56,8 +56,8 @@ date: 2019
 | [`POPA`](#popa)  | [`NEG`](#neg)                  | [`ROR`](#ror)  | [`JA`](#jcc), [`JG`](#jcc)   |                   |                   |                 | [`FDIV`](#fdiv), [`FIDIV`](#fidiv) |
 | [`POPF`](#popf)  | [`CMP`](#cmp)                  | [`ROL`](#rol)  | [`JECXZ`](#jecxz)            |                   |                   |                 | [`FCOMI`](#fcomi)                  |
 | [`LEA`](#lea)    |                                | [`BT`](#bt)    |                              |                   |                   |                 | [`FSQRT`](#fsqrt)                  |
-| [`CDQ`](#cdq)    |                                | [`BSWAP`](#bswap)|                            |                   |                   |                 | [`FABS`](#fabs)                    |
-|                  |                                |                |                              |                   |                   |                 | [`FCHS`](#fchs)                    |
+| [`CDQ`](#cdq)    |                                | [`BSWAP`](#bswap)|                            |                   |                   |                 | [`FABS`](#fabs), [`FCHS`](#fchs)   |
+|                  |                                |                |                              |                   |                   |                 | [`FSIN`](#fsin), [`FCOS`](#fcos)   |
 
 ## `ADD`
 
@@ -117,11 +117,11 @@ BT  r/m, imm        ; 0F BA /4 ib
 ## `CALL`
 
 *Call Function*
-: Memanggil fungsi dengan menyimpan `EIP` ke *stack*, lalu melompat ke alamat
+: Memanggil subrutin dengan menyimpan `EIP` ke *stack*, lalu melompat ke alamat
     yang diberikan.
 
 ```nasm
-CALL fun            ; PUSH EIP; JMP fun
+CALL addr           ; PUSH EIP; JMP addr
 
 CALL imm            ; E8 rd
 CALL imm:imm        ; 9A id iw
@@ -211,6 +211,129 @@ DIV n               ; EAX = EDX:EAX / n
 DIV r/m             ; F7 /6
 ```
 
+## `FABS`
+
+*Floating-Point Absolute Value*
+: Menghitung nilai absolut `ST0`, hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FABS                ; ST0 = fabs(ST0)
+
+FABS                ; D9 E1
+```
+
+## `FADD`
+
+*Floating-Point Add*
+: Menambahkan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FADD src            ; ST0 += src
+
+FADD m32            ; D8 /0
+FADD m64            ; DC /0
+FADD STx            ; D8 C0+r
+```
+
+## `FCHS`
+
+*Floating-Point Change Sign*
+: Menegasikan `ST0`, dari positif ke negatif atau sebaliknya.
+
+```nasm
+FCHS                ; ST0 = - ST0
+
+FCHS                ; D9 E0
+```
+
+## `FCOMI`
+
+*Floating-Point Compare and Set Flags Immediately*
+: Membandingkan `ST0` dengan register FPU lainnya, hasilnya langsung ditulis ke register `EFLAGS`.
+
+```nasm
+FCOMI src           ; CMP ST0, src                              [O.Z.PC]
+
+FCOMI STx           ; D8 F0+r
+```
+
+## `FCOS`
+
+*Floating-Point Cosine*
+: Menghitung kosinus dari `ST0` (dalam radian), hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FCOS                ; ST0 = cos(ST0)
+
+FCOS                ; D9 FF
+```
+
+## `FDIV`
+
+*Floating-Point Division*
+: Membagi `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+    `FDIVR` melakukan hal yang sama dengan urutan terbalik.
+
+```nasm
+FDIV src            ; ST0 /= src
+FDIVR src           ; ST0  = src / ST0
+
+FDIV m32            ; D8 /6
+FDIV m64            ; DC /6
+FDIV STx            ; D8 F0+r
+FDIVR m32           ; D8 /0
+FDIVR m64           ; DC /0
+FDIVR STx           ; D8 F8+r
+```
+
+## `FIADD`
+
+*Floating-Point Integer Add*
+: Menambahkan `ST0` dengan integer pada memori, hasilnya disimpan ke `ST0`.
+
+```nasm
+FIADD src           ; ST0 += src
+
+FIADD m32           ; DA /0
+```
+
+## `FIDIV`
+
+*Floating-Point Integer Division*
+: Membagi `ST0` dengan integer pada memori, hasilnya disimpan ke `ST0`.
+    `FIDIVR` melakukan hal yang sama dengan urutan terbalik.
+
+```nasm
+FIDIV src           ; ST0 /= src
+FIDIVR src          ; ST0  = src / ST0
+
+FIDIV m32           ; DA /6
+FIDIVR m32          ; DA /0
+```
+
+## `FILD`
+
+*Floating-Point Integer Load*
+: Mem-*push* nilai integer dari memori ke `ST0`, dengan mengubahnya menjadi *floating-point*.
+
+```nasm
+FILD src            ; ST0 = float(src)
+
+FILD m32            ; DB /0
+FILD m64            ; DF /5
+```
+
+## `FIMUL`
+
+*Floating-Point Integer Multiply*
+: Mengalikan `ST0` dengan integer pada memori, hasilnya disimpan ke `ST0`.
+
+```nasm
+FIMUL src           ; ST0 *= src
+
+FIMUL m32           ; DA /1
+```
+
 ## `FINIT`
 
 *Initialise Floating-Point Unit*
@@ -218,6 +341,121 @@ DIV r/m             ; F7 /6
 
 ```nasm
 FINIT               ; 9B DB E3
+```
+
+## `FISUB`
+
+*Floating-Point Integer Subtract*
+: Mengurangkan `ST0` dengan integer pada memori, hasilnya disimpan ke `ST0`.
+    `FISUBR` melakukan hal yang sama dengan urutan terbalik.
+
+```nasm
+FISUB src           ; ST0 -= src
+FISUBR src          ; ST0  = src - ST0
+
+FISUB m32           ; DA /4
+FISUBR m32          ; DA /5
+```
+
+## `FIST`
+
+*Floating-Point Integer Store*
+: Menyimpan nilai *floating-point* di `ST0` ke memori, dengan mengubahnya menjadi integer.
+    `FISTP` melakukan hal yang sama, tapi kemudian mem-*pop* `ST0`.
+
+```nasm
+FIST dst            ; dst = int(ST0)
+
+FIST m32            ; DB /2
+FISTP m32           ; DB /3
+FISTP m64           ; DF /0
+```
+
+## `FLD`
+
+*Floating-Point Load*
+: Mem-*push* nilai *floating-point* dari memori atau register FPU lainnya ke `ST0`.
+
+```nasm
+FLD src             ; ST0 = src
+FLD1                ; ST0 = 1.0
+FLDPI               ; ST0 = pi
+
+FLD m32             ; D9 /0
+FLD m64             ; DD /0
+FLD STx             ; D9 C0+r
+FLD1                ; D9 E8
+FLDPI               ; D9 EB
+```
+
+## `FMUL`
+
+*Floating-Point Multiply*
+: Mengalikan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FMUL src            ; ST0 *= src
+
+FMUL m32            ; D8 /1
+FMUL m64            ; DC /1
+FMUL STx            ; D8 C8+r
+```
+
+## `FSIN`
+
+*Floating-Point Sine*
+: Menghitung sinus dari `ST0` (dalam radian), hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FSIN                ; ST0 = sin(ST0)
+
+FSIN                ; D9 FE
+```
+
+## `FSQRT`
+
+*Floating-Point Square Root*
+: Menghitung akar kuadrat dari `ST0`, hasilnya disimpan kembali ke `ST0`.
+
+```nasm
+FSQRT               ; ST0 = sqrt(ST0)
+
+FSQRT               ; D9 FA
+```
+
+## `FSUB`
+
+*Floating-Point Subtract*
+: Mengurangkan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+    `FSUBR` melakukan hal yang sama dengan urutan terbalik.
+
+```nasm
+FSUB src            ; ST0 -= src
+FSUBR src           ; ST0  = src - ST0
+
+FSUB m32            ; D8 /4
+FSUB m64            ; DC /4
+FSUB STx            ; D8 E0+r
+FSUBR m32           ; D8 /5
+FSUBR m64           ; DC /5
+FSUBR STx           ; D8 E8+r
+```
+
+## `FST`
+
+*Floating-Point Store*
+: Menyimpan nilai *floating-point* di `ST0` ke memori atau register FPU lainnya.
+    `FSTP` melakukan hal yang sama, tapi kemudian mem-*pop* `ST0`.
+
+```nasm
+FST dst             ; dst = ST0
+
+FST m32             ; D9 /2
+FST m64             ; DD /2
+FST STx             ; DD D0+r
+FSTP m32            ; D9 /3
+FSTP m64            ; DD /3
+FSTP STx            ; DD D8+r
 ```
 
 ## `IDIV`
@@ -321,7 +559,6 @@ JECXZ rel           ; if (ECX == 0) EIP += rel
 JECXZ imm           ; E3 rb
 ```
 
-
 ## `JMP`
 
 *Jump*
@@ -338,7 +575,6 @@ JMP imm:imm         ; EA id iw
 JMP r/m             ; FF /4
 JMP FAR mem         ; FF /5
 ```
-
 
 ## `LEA`
 
