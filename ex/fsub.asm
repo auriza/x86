@@ -36,7 +36,7 @@ section .text
                 fld     dword [b]               ; b         a
                 fsubp                           ; a-b
                 fstp    qword [c]               ;
-                call    print_c
+                call    print_out
 
                 ; return 0
                 mov     eax, 0
