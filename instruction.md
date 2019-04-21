@@ -118,7 +118,7 @@ BT  r/m, imm        ; 0F BA /4 ib
 
 *Call Function*
 : Memanggil subrutin dengan menyimpan `EIP` ke *stack*, lalu melompat ke alamat
-    yang diberikan.
+    yang diberikan. [\[contoh\]](ex/call.asm)
 
 ```nasm
 CALL addr           ; PUSH EIP; JMP addr
@@ -226,13 +226,17 @@ FABS                ; D9 E1
 
 *Floating-Point Add*
 : Menambahkan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+    `FADDP` menambahkan dengan `ST1`, lalu mem-*pop* register *stack* FPU.
+    [\[contoh\]](ex/fmul.asm)
 
 ```nasm
 FADD src            ; ST0 += src
+FADDP               ; ST0 += ST1
 
 FADD m32            ; D8 /0
 FADD m64            ; DC /0
 FADD STx            ; D8 C0+r
+FADDP               ; DE C1
 ```
 
 ## `FCHS`
@@ -248,7 +252,7 @@ FCHS                ; D9 E0
 
 ## `FCOMI`
 
-*Floating-Point Compare and Set Flags Immediately*
+*Floating-Point Compare and Set CPU Flags Immediately*
 : Membandingkan `ST0` dengan register FPU lainnya, hasilnya langsung ditulis ke register `EFLAGS`.
 
 ```nasm
@@ -273,10 +277,14 @@ FCOS                ; D9 FF
 *Floating-Point Division*
 : Membagi `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
     `FDIVR` melakukan hal yang sama dengan urutan terbalik.
+    `FDIVP` dan `FDIVRP` membagi dengan `ST1`, lalu mem-*pop* register *stack* FPU.
+    [\[contoh\]](ex/fdiv.asm)
 
 ```nasm
 FDIV src            ; ST0 /= src
 FDIVR src           ; ST0  = src / ST0
+FDIVP               ; ST0  = ST1 / ST0
+FDIVRP              ; ST0 /= ST1
 
 FDIV m32            ; D8 /6
 FDIV m64            ; DC /6
@@ -284,6 +292,8 @@ FDIV STx            ; D8 F0+r
 FDIVR m32           ; D8 /0
 FDIVR m64           ; DC /0
 FDIVR STx           ; D8 F8+r
+FDIVP               ; DE F9
+FDIVRP              ; DE F1
 ```
 
 ## `FIADD`
@@ -337,7 +347,8 @@ FIMUL m32           ; DA /1
 ## `FINIT`
 
 *Initialise Floating-Point Unit*
-: Menginisialisasi FPU ke keadaan *default*, semua register ditandai kosong.
+: Menginisialisasi FPU ke keadaan *default*, semua register *stack* FPU ditandai kosong.
+    [\[contoh\]](ex/fdiv.asm)
 
 ```nasm
 FINIT               ; 9B DB E3
@@ -360,8 +371,8 @@ FISUBR m32          ; DA /5
 ## `FIST`
 
 *Floating-Point Integer Store*
-: Menyimpan nilai *floating-point* di `ST0` ke memori, dengan mengubahnya menjadi integer.
-    `FISTP` melakukan hal yang sama, tapi kemudian mem-*pop* `ST0`.
+: Menyalin nilai *floating-point* di `ST0` ke memori, dengan mengubahnya menjadi integer.
+    `FISTP` melakukan hal yang sama, tapi kemudian mem-*pop* register *stack* FPU.
 
 ```nasm
 FIST dst            ; dst = int(ST0)
@@ -375,11 +386,12 @@ FISTP m64           ; DF /0
 
 *Floating-Point Load*
 : Mem-*push* nilai *floating-point* dari memori atau register FPU lainnya ke `ST0`.
+    [\[contoh\]](ex/fmul.asm)
 
 ```nasm
 FLD src             ; ST0 = src
 FLD1                ; ST0 = 1.0
-FLDPI               ; ST0 = pi
+FLDPI               ; ST0 = π
 
 FLD m32             ; D9 /0
 FLD m64             ; DD /0
@@ -392,13 +404,17 @@ FLDPI               ; D9 EB
 
 *Floating-Point Multiply*
 : Mengalikan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
+    `FMULP` mengalikan dengan `ST1`, lalu mem-*pop* register *stack* FPU.
+    [\[contoh\]](ex/fmul.asm)
 
 ```nasm
 FMUL src            ; ST0 *= src
+FMULP               ; ST0 *= ST1
 
 FMUL m32            ; D8 /1
 FMUL m64            ; DC /1
 FMUL STx            ; D8 C8+r
+FMULP               ; DE C9
 ```
 
 ## `FSIN`
@@ -428,10 +444,14 @@ FSQRT               ; D9 FA
 *Floating-Point Subtract*
 : Mengurangkan `ST0` dengan operand, hasilnya disimpan kembali ke `ST0`.
     `FSUBR` melakukan hal yang sama dengan urutan terbalik.
+    `FSUBP` dan `FSUBRP` mengurangkan dengan `ST1`, lalu mem-*pop* register *stack* FPU.
+    [\[contoh\]](ex/fsub.asm)
 
 ```nasm
 FSUB src            ; ST0 -= src
 FSUBR src           ; ST0  = src - ST0
+FSUBP               ; ST0  = ST1 - ST0
+FSUBRP              ; ST0 -= ST1
 
 FSUB m32            ; D8 /4
 FSUB m64            ; DC /4
@@ -439,13 +459,16 @@ FSUB STx            ; D8 E0+r
 FSUBR m32           ; D8 /5
 FSUBR m64           ; DC /5
 FSUBR STx           ; D8 E8+r
+FSUBP               ; DE E9
+FSUBRP              ; DE E1
 ```
 
 ## `FST`
 
 *Floating-Point Store*
-: Menyimpan nilai *floating-point* di `ST0` ke memori atau register FPU lainnya.
-    `FSTP` melakukan hal yang sama, tapi kemudian mem-*pop* `ST0`.
+: Menyalin nilai *floating-point* di `ST0` ke memori atau register FPU lainnya.
+    `FSTP` melakukan hal yang sama, tapi kemudian mem-*pop* register *stack* FPU.
+    [\[contoh\]](ex/fdiv.asm)
 
 ```nasm
 FST dst             ; dst = ST0
@@ -811,7 +834,7 @@ REPNE               ; F2
 *Return from Call*
 : Mengambil `EIP` dari *stack* dan memindahkan kontrol ke alamat yang baru. Jika
     operand kedua ada, `ESP` akan ditambah sebanyak *n* setelah alamat *return*
-    diambil.
+    diambil. [\[contoh\]](ex/call.asm)
 
 ```nasm
 RET                 ; POP EIP
