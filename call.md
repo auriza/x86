@@ -58,14 +58,6 @@ kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 
 [`call.asm`](ex/call.asm)
 
-```c
-int sum_double(int a, int b) {
-    int c = 2;
-    return (a + b) * c;
-}
-```
-
-
 ```nasm
                 ; int sum_double(int a, int b) {
                 ;     int c = 2;
