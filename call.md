@@ -58,11 +58,22 @@ kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 
 [`call.asm`](ex/call.asm)
 
+```c
+int sum_double(int a, int b) {
+    int c = 2;
+    return (a + b) * c;
+}
+```
+
+
 ```nasm
-                ; int sum_double(int a, int b) {
-                ;     int c = 2;
-                ;     return (a + b) * c;
-                ; }
+    main:
+                ; sum_double(10, 5) --> eax = 30
+                push    dword 5
+                push    dword 10
+                call    sum_double
+                add     esp, 8
+
     sum_double:
                 push    ebp                     ; save old ebp
                 mov     ebp, esp                ; set new ebp
@@ -77,10 +88,4 @@ kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
                 mov     esp, ebp                ; deallocate local vars
                 pop     ebp                     ; restore old ebp
                 ret
-    main:
-                ; sum_double(10, 5) --> eax = 30
-                push    dword 5
-                push    dword 10
-                call    sum_double
-                add     esp, 8
 ```
