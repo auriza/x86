@@ -10,7 +10,6 @@ section .text
             mov eax, [a]                    ;       eax = 5
             mul dword [b]                   ; eax * [b] = 15
 
-            ; exit(0)
-            mov eax, 1
-            mov ebx, 0
-            int 0x80
+            ; return 0
+            mov eax, 0
+            ret

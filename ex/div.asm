@@ -12,7 +12,6 @@ section .text
             div dword [b]                   ;     eax = eax / [b] = 50
                                             ;     edx = eax % [b] = 6
 
-            ; exit(0)
-            mov eax, 1
-            mov ebx, 0
-            int 0x80
+            ; return 0
+            mov eax, 0
+            ret

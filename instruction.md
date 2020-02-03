@@ -57,7 +57,7 @@ date: 2019
 | [`POPF`](#popf)  | [`CMP`](#cmp)                  | [`ROL`](#rol)  | [`JECXZ`](#jecxz)            |                   |                   |                 | [`FCOMI`](#fcomi)                  |
 | [`LEA`](#lea)    |                                | [`BT`](#bt)    |                              |                   |                   |                 | [`FSQRT`](#fsqrt)                  |
 | [`CDQ`](#cdq)    |                                | [`BSWAP`](#bswap)|                            |                   |                   |                 | [`FABS`](#fabs), [`FCHS`](#fchs)   |
-|                  |                                |                |                              |                   |                   |                 | [`FSIN`](#fsin), [`FCOS`](#fcos)   |
+|                  |                                |                |                              |                   |                   |                 | [`FSIN`](#fsin), [`FCOS`](#fcos), [`FPTAN`](#fptan) |
 
 ## `ADD`
 
@@ -121,7 +121,8 @@ BT  r/m, imm        ; 0F BA /4 ib
     yang diberikan. [\[contoh\]](ex/call.asm)
 
 ```nasm
-CALL addr           ; PUSH EIP; JMP addr
+CALL addr           ; PUSH EIP
+                    ; JMP addr
 
 CALL imm            ; E8 rd
 CALL imm:imm        ; 9A id iw
@@ -415,6 +416,19 @@ FMUL m32            ; D8 /1
 FMUL m64            ; DC /1
 FMUL STx            ; D8 C8+r
 FMULP               ; DE C9
+```
+
+## `FPTAN`
+
+*Floating-Point Tangent*
+: Menghitung tangen dari `ST0` (dalam radian), hasilnya disimpan kembali ke `ST0`,
+    lalu mem-*push* nilai 1.0 ke register *stack* FPU.
+
+```nasm
+FPTAN               ; ST1 = tan(ST0)
+                    ; ST0 = 1.0
+
+FPTAN               ; D9 F2
 ```
 
 ## `FSIN`
@@ -780,7 +794,7 @@ POPF                ; 9D
     (`[ESP]`). [\[contoh\]](ex/push.asm)
 
 ```nasm
-PUSH src            ; ESP -= 4;  [ESP] = data
+PUSH src            ; ESP -= 4;  [ESP] = src
 
 PUSH reg            ; 50+r
 PUSH mem            ; FF /6

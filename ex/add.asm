@@ -16,10 +16,6 @@ section .text
             add eax, 0x_8000_0000       ; eax = 0x_1_0000_0000
                                         ;     = 0       --> ZF=1 CF=1 OF=1
 
-            ; exit(0)
-            mov eax, 1
-            mov ebx, 0
-            int 0x80
-
-
-
+            ; return 0
+            mov eax, 0
+            ret

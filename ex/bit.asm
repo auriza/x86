@@ -25,7 +25,6 @@ section .text
             bt dword [esp], 8           ; check debug flag --> CF = TF
             popf
 
-            ; exit(0)
-            mov eax, 1
-            mov ebx, 0
-            int 0x80
+            ; return 0
+            mov eax, 0
+            ret

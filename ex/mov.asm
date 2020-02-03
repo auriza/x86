@@ -23,7 +23,6 @@ section .text
             mov ecx, [edi+4]            ; ecx = 200
             shl ecx, 1
 
-            ; exit(0)
-            mov eax, 1
-            mov ebx, 0
-            int 0x80
+            ; return 0
+            mov eax, 0
+            ret
