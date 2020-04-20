@@ -19,22 +19,27 @@ pada 8 *bytes* setelah `EBP`. Di atas parameter pada *stack* adalah *return addr
 yang diletakkan oleh instruksi `CALL`. Saat instruksi `RET` dijalankan untuk
 kembali dari subrutin, maka akan loncat ke alamat yang disimpan di *stack* ini.
 
+
 ```
-+---------------+  <---  ESP        #
-|  Local var 2  |                   |
-+---------------+  ebp-4            |
-|  Local var 1  |                   | Callee
-+---------------+  <---  EBP        |
-|   Saved EBP   |                   |
-+---------------+                   |
-|  Return addr  |                   #
-+---------------+  ebp+8            |
-|  Parameter 1  |                   |
-+---------------+  ebp+12           | Caller
-|  Parameter 2  |                   |
-+---------------+  ebp+16           |
-|  Parameter 3  |                   |
-+---------------+                   #
+ hi |      ...      |
+    +---------------+                   #
+    |  Parameter 3  |  EBP + 16         |
+    +---------------+                   |
+    |  Parameter 2  |  EBP + 12         |
+    +---------------+                   | Caller
+    |  Parameter 1  |  EBP + 8          |
+    +---------------+                   |
+    |  Return addr  |                   |
+    +---------------+                   #
+    |  Caller EBP   |  EBP              |
+    +---------------+                   |
+    |  Local var 1  |  EBP - 4          | Callee
+    +---------------+                   |
+    |  Local var 2  |  ESP              |
+    +---------------+                   #
+low |     ...       |
+
+       Stack Frame
 ```
 
 
@@ -89,3 +94,24 @@ int sum_double(int a, int b) {
                 pop     ebp                     ; restore old ebp
                 ret
 ```
+
+<small><pre>
+ hi | .... | ESP    | .... |        | .... |        | .... |        | .... |        | .... |         | .... |           | .... |         | .... |       | .... |        | .... | ESP
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+    |      |        | arg1 | ESP    | arg1 |        | arg1 |        | arg1 |        | arg1 |         | arg1 |           | arg1 |         | arg1 |       | arg1 |        |  ..  |
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+    |      |        |      |        | arg2 | ESP    | arg2 |        | arg2 |        | arg2 |         | arg2 |           | arg2 |         | arg2 |       | arg2 | ESP    |  ..  |
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+    |      |        |      |        |      |        | ret  | ESP    | ret  |        | ret  |         | ret  |           | ret  |         | ret  | ESP   |  ..  |        |  ..  |
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+    |      |        |      |        |      |        |      |        | EBPx | ESP    | EBPx | EBP,ESP | EBPx | EBP       | EBPx | EBP,ESP |  ..  |       |  ..  |        |  ..  |
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+    |      |        |      |        |      |        |      |        |      |        |      |         | var1 |           | .... |         |  ..  |       |  ..  |        |  ..  |
+    +------+        +------+        +------+        +------+        +------+        +------+         +------+           +------+         +------+       +------+        +------+
+low |      |        |      |        |      |        |      |        |      |        |      |         | .... | ESP       | .... |         |  ..  |       |  ..  |        |  ..  |
+
+                    push arg1       push arg2       call func       push ebp        mov ebp,esp      sub esp,n*4        mov esp,ebp      pop ebp        ret             add esp,8
+
+                    [---------------------------------------]       [=========================================/........./======================================]        [-------]
+                                     CALLER                                                                     CALLEE                                                    CALLER
+</pre></small>
