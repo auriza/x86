@@ -1,5 +1,5 @@
 global main
-extern printf, fflush
+extern printf
 
 section .data
     fmt     db  "%d", 10, 0
@@ -12,11 +12,6 @@ section .text
             push fmt
             call printf
             add esp, 8          ; pop, pop
-
-            ; fflush(0)
-            push 0
-            call fflush
-            add esp, 4          ; pop
 
             ; return 0
             mov eax, 0

@@ -8,8 +8,8 @@ section .data
 
 section .text
                 ; int sum_double(int a, int b) {
-                    ; int c = 2;
-                    ; return (a + b) * c;
+                ;     int c = 2;
+                ;     return (a + b) * c;
                 ; }
     sum_double:
                 push    ebp                     ; save old ebp
@@ -25,19 +25,17 @@ section .text
                 mov     esp, ebp                ; deallocate local vars
                 pop     ebp                     ; restore old ebp
                 ret
+
     main:
-                ; sum_double(10, 5) --> eax = 30
-                push    dword 5
+                push    dword 5                 ; eax = sum_double(10, 5)
                 push    dword 10
                 call    sum_double
                 add     esp, 8
 
-                ; printf("%d\n", eax)
-                push    eax
+                push    eax                     ; printf("%d\n", eax)
                 push    fmt_out
                 call    printf
                 add     esp, 8
 
-                ; return 0
-                mov     eax, 0
+                mov     eax, 0                  ; return 0
                 ret

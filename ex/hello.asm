@@ -1,9 +1,9 @@
-; build: yasm %f -f elf32 && ld -o %e -e main -m elf_i386 %e.o
+; build: yasm %f -f elf32 && ld -o %e -m elf_i386 %e.o
 
 global main
 
 segment .data
-    hello       db      'Hello world!', 10, 0
+    hello       db      'Hello world!', 10
 
 segment .text
     main:
@@ -11,7 +11,7 @@ segment .text
                 mov     eax, 4
                 mov     ebx, 1
                 mov     ecx, hello
-                mov     edx, 14
+                mov     edx, 13
                 int     0x80
 
                 ; exit(status)
